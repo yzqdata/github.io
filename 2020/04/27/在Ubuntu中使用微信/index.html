@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="在Ubuntu中使用微信(deepin-wine)"/><link rel="alternate" href="/atom.xml" title="yzqdata" type="application/atom+xml">
+<link rel="canonical" href="http://example.com/2020/04/27/在Ubuntu中使用微信/"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=" />
+
+<script>
+  window.config = {"leancloud":"","toc":"","fancybox":"","pjax":"","latex":""};
+</script>
+
+    <title>在Ubuntu中使用微信(deepin-wine) - yzqdata</title>
+  <meta name="generator" content="Hexo 6.1.0"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">yzqdata</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">yzqdata</a>
+</div>
+
+<nav class="site-navbar"></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">在Ubuntu中使用微信(deepin-wine)
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-04-27
+        </span><span class="post-category">
+            <a href="/categories/linux/">linux</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h1 id="在Ubuntu中使用微信-deepin-wine"><a href="#在Ubuntu中使用微信-deepin-wine" class="headerlink" title="在Ubuntu中使用微信(deepin-wine)"></a>在Ubuntu中使用微信(deepin-wine)</h1><p>本文分享了在Ubuntu环境中使用微信</p>
+<p>最近给同学们更换了<code>Ubuntu</code>开发环境，问题是微信等官方并没有提供<code>Ubuntu</code>支持版本。同样还有QQ，输入法等，这里分享一些在<code>Ubuntu</code>中微信的使用。推荐使用第四种，第五种方式。</p>
+<h2 id="1-封装web应用"><a href="#1-封装web应用" class="headerlink" title="1. 封装web应用"></a>1. 封装web应用</h2><p>可以利用<code>nativefier</code>，<code>nw.js</code>等打包工具或者设置快捷方式将微信网页版<code>web</code>打包成应用。目前这种办法不能使用了，<code>Ubuntu</code>下微信网页版不能正常打开。</p>
+<h2 id="2-wewechat"><a href="#2-wewechat" class="headerlink" title="2. wewechat"></a>2. wewechat</h2><p>可以使用开源第三方，如<code>wewechat</code>,<code>electronic-wechat</code>等，大概率现在也不能正常使用。</p>
+<h2 id="3-wine"><a href="#3-wine" class="headerlink" title="3. wine"></a>3. wine</h2><p>下载安装后发现有输入框不显示，缺少依赖等问题。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install wine</span><br></pre></td></tr></table></figure>
+
+<p>下载exe运行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wine WeChatSetup.exe</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-deepin-wine"><a href="#4-deepin-wine" class="headerlink" title="4. deepin-wine"></a>4. deepin-wine</h2><p>使用<code>deepin-wine</code>环境和<code>deepin</code>官方原版软件包</p>
+<ol>
+<li><p>下载安装<code>deepin-wine</code>环境</p>
+</li>
+<li><p>下载软件包</p>
+</li>
+<li><p>安装软件包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dpkg -i xxx.deb</span><br></pre></td></tr></table></figure>
+
+<p>微信不能发送图片：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libjpeg62:i386</span><br></pre></td></tr></table></figure>
+
+<p>拷贝字体：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/share/deepin-wine/wine/fonts</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="5-deepin-wine"><a href="#5-deepin-wine" class="headerlink" title="5. deepin-wine"></a>5. deepin-wine</h2><p>同样也可以使用<a target="_blank" rel="noopener" href="https://github.com/zq1997/deepin-wine">开源快速方法</a>，其中有很详细的介绍</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -O- https://deepin-wine.i-m.dev/setup.sh | sh</span><br></pre></td></tr></table></figure>
+
+<p>详细配置可详见<code>setup.sh</code>与文档介绍</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install com.qq.weixin.deepin</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+      <footer class="post-footer">
+        
+        <nav class="post-nav"><a class="prev" href="/2020/12/05/linux%20%E7%A0%B4%E8%A7%A3Navicat15/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Linux Navicat15 破解</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2020/01/23/Linux%E5%91%BD%E4%BB%A4/">
+        <span class="next-text nav-default">linux命令</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">ZiQiYang</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v="></script>
+</body>
+</html>

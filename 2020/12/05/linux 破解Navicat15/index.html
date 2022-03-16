@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="Linux Navicat15 破解"/><link rel="alternate" href="/atom.xml" title="yzqdata" type="application/atom+xml">
+<link rel="canonical" href="http://example.com/2020/12/05/linux 破解Navicat15/"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=" />
+
+<script>
+  window.config = {"leancloud":"","toc":"","fancybox":"","pjax":"","latex":""};
+</script>
+
+    <title>Linux Navicat15 破解 - yzqdata</title>
+  <meta name="generator" content="Hexo 6.1.0"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">yzqdata</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">yzqdata</a>
+</div>
+
+<nav class="site-navbar"></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">Linux Navicat15 破解
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-12-05
+        </span><span class="post-category">
+            <a href="/categories/linux/">linux</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h1 id="Linux-Navicat15-破解"><a href="#Linux-Navicat15-破解" class="headerlink" title="Linux Navicat15 破解"></a>Linux Navicat15 破解</h1><p>破解前分别下载下面的软件，下载完成后均放到一个文件夹中：</p>
+<ul>
+<li>链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/127BWYAIBSoKj9MwkruJXKQ">https://pan.baidu.com/s/127BWYAIBSoKj9MwkruJXKQ</a> 提取码: h2pr</li>
+<li>官网15的版本：<a target="_blank" rel="noopener" href="https://www.navicat.com.cn/download/navicat-premium">https://www.navicat.com.cn/download/navicat-premium</a></li>
+</ul>
+<h2 id="系统环境配置"><a href="#系统环境配置" class="headerlink" title="系统环境配置"></a>系统环境配置</h2><ol>
+<li>安装capstone</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libcapstone-dev</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>安装编译工具</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install cmake</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>安装keystone，下载源码并编译安装keystone</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/keystone-engine/keystone.git</span><br><span class="line"></span><br><span class="line">cd keystone</span><br><span class="line"></span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line"></span><br><span class="line">../make-share.sh</span><br><span class="line"></span><br><span class="line">sudo make install</span><br><span class="line">sudo ldconfig</span><br></pre></td></tr></table></figure>
+
+<p>3.1 执行 <code>../make-share.sh</code> 命令错误</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">-- The C compiler identification is GNU 8.3.0</span><br><span class="line">-- The CXX compiler identification is unknown</span><br><span class="line">-- Check for working C compiler: /usr/bin/cc</span><br><span class="line">-- Check for working C compiler: /usr/bin/cc -- works</span><br><span class="line">-- Detecting C compiler ABI info</span><br><span class="line">-- Detecting C compiler ABI info - done</span><br><span class="line">-- Detecting C compile features</span><br><span class="line">-- Detecting C compile features - done</span><br><span class="line">CMake Error at CMakeLists.txt:5 (project):</span><br><span class="line">  No CMAKE_CXX_COMPILER could be found.</span><br><span class="line"></span><br><span class="line">  Tell CMake where to find the compiler by setting either the environment</span><br><span class="line">  variable &quot;CXX&quot; or the CMake cache entry CMAKE_CXX_COMPILER to the full path</span><br><span class="line">  to the compiler, or to the compiler name if it is in the PATH.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-- Configuring incomplete, errors occurred!</span><br><span class="line">See also &quot;/opt/local/navicat/keystone/build/CMakeFiles/CMakeOutput.log&quot;.</span><br><span class="line">See also &quot;/opt/local/navicat/keystone/build/CMakeFiles/CMakeError.log&quot;.</span><br></pre></td></tr></table></figure>
+
+<p>解决方案：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install -y build-essential</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>安装rapidjson</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install rapidjson-dev</span><br></pre></td></tr></table></figure>
+
+<h2 id="破解步骤"><a href="#破解步骤" class="headerlink" title="破解步骤"></a>破解步骤</h2><ul>
+<li>下载破解文件并解压缩，将此三个文件剪切到 <code>/navicat</code> 目录下，与 <code>navicat</code> 官方 <code>AppImage</code> 文件放在同一目录下，给破解文件授权可写权限</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x appimagetool-x86_64.AppImage navicat-patcher navicat-keygen</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>挂载并解包官方AppImage文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">mkdir navicat15</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">挂载官方包</span></span><br><span class="line">sudo mount -o loop navicat15-premium-cs.AppImage navicat15</span><br><span class="line"></span><br><span class="line">cp -r navicat15 navicat15-patched</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">取消挂载,<span class="variable">$&#123;path&#125;</span>为当前工作目录的绝对路径,此步骤可省略,如果不取消挂载,你的电脑中将多出一个磁盘.</span></span><br><span class="line">sudo unmount $&#123;path&#125;/navicat/navicat15</span><br><span class="line">mkdir navicat15</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">挂载官方包</span></span><br><span class="line">sudo mount -o loop navicat15-premium-cs.AppImage navicat15</span><br><span class="line"></span><br><span class="line">cp -r navicat15 navicat15-patched</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">取消挂载,<span class="variable">$&#123;path&#125;</span>为当前工作目录的绝对路径,此步骤可省略,如果不取消挂载,你的电脑中将多出一个磁盘.</span></span><br><span class="line">sudo unmount $&#123;path&#125;/navicat/navicat15</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>运行破解补丁文件，生成RSA证书.pem文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./navicat-patcher navicat15-patched</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>重新打包生成可执行的AppImage文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./appimagetool-x86_64.AppImage navicat15-patched navicat15-premium-cs-pathed.AppImage</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改文件权限</span></span><br><span class="line">chmod +x navicat15-premium-cs-pathed.AppImage</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>运行新打包的文件，运行navicat软件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./navicat15-premium-cs-pathed.AppImage</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>新开一个终端窗口，运行注册机，生成序列号和激活码</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./navicat-keygen --text RegPrivateKey.pem</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>根据提示分别选择产品类型、语言类型、产品版本生成序列号</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">**********************************************************</span><br><span class="line">*       Navicat Keygen (Linux) by @DoubleLabyrinth       *</span><br><span class="line">*                   Version: 1.0                         *</span><br><span class="line">**********************************************************</span><br><span class="line">[*] Select Navicat product:</span><br><span class="line"> 0. DataModeler</span><br><span class="line"> 1. Premium</span><br><span class="line"> 2. MySQL</span><br><span class="line"> 3. PostgreSQL</span><br><span class="line"> 4. Oracle</span><br><span class="line"> 5. SQLServer</span><br><span class="line"> 6. SQLite</span><br><span class="line"> 7. MariaDB</span><br><span class="line"> 8. MongoDB</span><br><span class="line"> 9. ReportViewer</span><br><span class="line"></span><br><span class="line">(Input index)&gt; 1</span><br><span class="line">[*] Select product language:</span><br><span class="line"> 0. English</span><br><span class="line"> 1. Simplified Chinese</span><br><span class="line"> 2. Traditional Chinese</span><br><span class="line"> 3. Japanese</span><br><span class="line"> 4. Polish</span><br><span class="line"> 5. Spanish</span><br><span class="line"> 6. French</span><br><span class="line"> 7. German</span><br><span class="line"> 8. Korean</span><br><span class="line"> 9. Russian</span><br><span class="line"> 10. Portuguese</span><br><span class="line"></span><br><span class="line">(Input index)&gt; 1</span><br><span class="line">[*] Input major version number:</span><br><span class="line">(range: 0 ~ 15, default: 12)&gt; 15</span><br><span class="line">[*] Serial number:</span><br><span class="line">NAVC-PJWW-BKN4-C4YW</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>复制生成的序列号粘贴到运行中的navicat中，点击激活选择手动激活(<em><strong>需断开网络</strong></em>)，然后复制上面的BASE64代码备用</li>
+<li>填写个人信息、所在组织信息</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[*] Your name: yzq</span><br><span class="line">[*] Your organization: zx</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>粘贴上面复制的BASE64代码后双击回车键生成激活码</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[*] Input request code in Base64: (Double press ENTER to end)</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">此处粘贴navicat软件复制的代码</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果没出现错误，则会生成激活码</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[*] Request Info:</span><br><span class="line">&#123;&quot;K&quot;:&quot;NAVCPJWWBKN4C4YW&quot;, &quot;DI&quot;:&quot;B0A1C7E8FA226577356B&quot;, &quot;P&quot;:&quot;linux&quot;&#125;</span><br><span class="line"></span><br><span class="line">[*] Response Info:</span><br><span class="line">&#123;&quot;K&quot;:&quot;NAVCPJWWBKN4C4YW&quot;,&quot;DI&quot;:&quot;B0A1C7E8FA226577356B&quot;,&quot;N&quot;:&quot;yzq&quot;,&quot;O&quot;:&quot;zx&quot;,&quot;T&quot;:1582448573&#125;</span><br><span class="line"></span><br><span class="line">[*] Activation Code:</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">此处就是生成的激活码</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>将生成的激活码粘贴到navicat中激活即可</li>
+</ul>
+
+      </div>
+      
+      <footer class="post-footer">
+        
+        <nav class="post-nav"><a class="next" href="/2020/04/27/%E5%9C%A8Ubuntu%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1/">
+        <span class="next-text nav-default">在Ubuntu中使用微信(deepin-wine)</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">ZiQiYang</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v="></script>
+</body>
+</html>
