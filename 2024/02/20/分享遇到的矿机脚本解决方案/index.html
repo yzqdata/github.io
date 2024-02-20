@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="分享遇到的矿机脚本解决方案"/><link rel="alternate" href="/atom.xml" title="yzq" type="application/atom+xml">
+<link rel="canonical" href="http://example.com/2024/02/20/分享遇到的矿机脚本解决方案/"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=" />
+
+<script>
+  window.config = {"leancloud":"","toc":"","fancybox":"","pjax":"","latex":""};
+</script>
+
+    <title>分享遇到的矿机脚本解决方案 - yzq</title>
+  <meta name="generator" content="Hexo 6.1.0"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">yzq</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">yzq</a>
+</div>
+
+<nav class="site-navbar"></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">分享遇到的矿机脚本解决方案
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2024-02-20
+        </span><span class="post-category">
+            <a href="/categories/linux/">linux</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><p>记录一次在生产运维中遇到的一次矿机脚本处理方案</p>
+<p>短信收到阿里云的提醒存在挖矿程序 查看top发现linuxsys 的进程 cpu 占用率高达200+%  kill之后一段时间内又会重启  </p>
+<p><img src="/2024/02/20/%E5%88%86%E4%BA%AB%E9%81%87%E5%88%B0%E7%9A%84%E7%9F%BF%E6%9C%BA%E8%84%9A%E6%9C%AC%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/334a3a6afb893fc78dd7078e8c0fa38.png" alt="334a3a6afb893fc78dd7078e8c0fa38"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">通过ps -ef | grep 31746  find / -name linuxsys  查找脚本所在文件位置</span><br></pre></td></tr></table></figure>
+
+<p>在执行 find &#x2F; -name linuxsys 提示</p>
+<p><img src="/2024/02/20/%E5%88%86%E4%BA%AB%E9%81%87%E5%88%B0%E7%9A%84%E7%9F%BF%E6%9C%BA%E8%84%9A%E6%9C%AC%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/c7e536d9b0d1ce17e8facb779b156e5.png" alt="c7e536d9b0d1ce17e8facb779b156e5"></p>
+<p>然后进入&#x2F;proc 发现一堆数字文件 发现一个规律这个数字文件 是每次kill 掉后的PID</p>
+<p><img src="/2024/02/20/%E5%88%86%E4%BA%AB%E9%81%87%E5%88%B0%E7%9A%84%E7%9F%BF%E6%9C%BA%E8%84%9A%E6%9C%AC%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/image-20240220123831975.png" alt="image-20240220123831975"></p>
+<p>然后删除这些文件  删除不了  提示没有权限 执行 chown -R root:root  文件名  还是无济于事 </p>
+<p>最后在top 中发现运行这个脚本的的用户是git  切换用su git  登录不上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">passwd git 更改git 账户密码后 切换到git 用户  删除掉脚本文件    </span><br><span class="line"></span><br><span class="line">vim /etc/passwd  删除git 用户 </span><br><span class="line"></span><br><span class="line">find / -user git 删除所有找到的目录  自此脚本未能自动重启  解决完成 </span><br></pre></td></tr></table></figure>
+
+
+      </div>
+      
+      <footer class="post-footer">
+        
+        <nav class="post-nav"><a class="next" href="/2020/12/05/linux%20%E7%A0%B4%E8%A7%A3Navicat15/">
+        <span class="next-text nav-default">Linux Navicat15 破解</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2024<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">ZiQiYang</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v="></script>
+</body>
+</html>
