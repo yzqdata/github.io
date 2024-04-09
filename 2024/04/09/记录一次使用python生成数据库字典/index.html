@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="使用pythonDoc 生成数据库字典"/><meta name="keywords" content="python, yzq" /><link rel="alternate" href="/atom.xml" title="yzq" type="application/atom+xml">
+<link rel="canonical" href="http://example.com/2024/04/09/记录一次使用python生成数据库字典/"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=" />
+
+<script>
+  window.config = {"leancloud":"","toc":"","fancybox":"","pjax":"","latex":""};
+</script>
+
+    <title>使用pythonDoc 生成数据库字典 - yzq</title>
+  <meta name="generator" content="Hexo 6.1.0"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">yzq</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">yzq</a>
+</div>
+
+<nav class="site-navbar"></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">使用pythonDoc 生成数据库字典
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2024-04-09
+        </span></div>
+    </header>
+
+    <div class="post-content"><p>直接列代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"><span class="keyword">from</span> docx.enum.text <span class="keyword">import</span> WD_ALIGN_PARAGRAPH, WD_PARAGRAPH_ALIGNMENT</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> docx <span class="keyword">import</span> Document</span><br><span class="line"><span class="keyword">from</span> docx.shared <span class="keyword">import</span> Pt, RGBColor</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">logprint</span>():</span><br><span class="line">    document = Document()</span><br><span class="line">    config = &#123;</span><br><span class="line">        <span class="string">&#x27;host&#x27;</span>:<span class="string">&#x27;*&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;user&#x27;</span>:<span class="string">&#x27;*&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;password&#x27;</span>:<span class="string">&#x27;*&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;database&#x27;</span>:<span class="string">&#x27;*&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    connect = pymysql.connect(**config)</span><br><span class="line">    j = <span class="number">1</span></span><br><span class="line">    styletitle = document.styles.add_style(<span class="string">&#x27;textstyle&#x27;</span>,WD_ALIGN_PARAGRAPH.CENTER)</span><br><span class="line">    styletitle.font.size = Pt(<span class="number">20</span>)</span><br><span class="line">    styletitle.font.color.rgb = RGBColor(<span class="number">66</span>, <span class="number">100</span>, <span class="number">0</span>)</span><br><span class="line">    title = document.add_paragraph(<span class="string">f&quot;<span class="subst">&#123;config[<span class="string">&#x27;database&#x27;</span>]&#125;</span>数据字典&quot;</span>, style=styletitle)</span><br><span class="line">    title.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">with</span> connect.cursor() <span class="keyword">as</span> cursor:</span><br><span class="line">            cursor.execute(<span class="string">f&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">                SELECT </span></span><br><span class="line"><span class="string">                    TABLE_NAME ,</span></span><br><span class="line"><span class="string">                    TABLE_COMMENT</span></span><br><span class="line"><span class="string">                FROM </span></span><br><span class="line"><span class="string">                    INFORMATION_SCHEMA.TABLES</span></span><br><span class="line"><span class="string">                WHERE </span></span><br><span class="line"><span class="string">                    TABLE_SCHEMA = &#x27;<span class="subst">&#123;config[<span class="string">&#x27;database&#x27;</span>]&#125;</span>&#x27;;&quot;&quot;&quot;</span><span class="string">&quot;&quot;</span>)</span><br><span class="line">            tables = cursor.fetchall()</span><br><span class="line">            <span class="keyword">for</span> table <span class="keyword">in</span> tables:</span><br><span class="line">                name,comment = table</span><br><span class="line">                <span class="comment"># if j&gt;5:</span></span><br><span class="line">                <span class="comment">#     break</span></span><br><span class="line">                tableName = name</span><br><span class="line">                tablecomment = comment</span><br><span class="line">                <span class="built_in">print</span>(tableName)</span><br><span class="line">                <span class="built_in">print</span>(tablecomment)</span><br><span class="line">                document.add_heading(<span class="string">f&#x27;<span class="subst">&#123;j&#125;</span>.<span class="subst">&#123;tablecomment&#125;</span>【<span class="subst">&#123;tableName&#125;</span>】&#x27;</span>,level=<span class="number">1</span>)</span><br><span class="line">                tt = document.add_table(rows=<span class="number">1</span>, cols=<span class="number">4</span>, style=<span class="string">&#x27;Table Grid&#x27;</span>)</span><br><span class="line">                <span class="comment"># table.cell(0,0).text=&#x27;字段名&#x27;</span></span><br><span class="line">                run = tt.cell(<span class="number">0</span>, <span class="number">0</span>).paragraphs[<span class="number">0</span>].add_run(<span class="string">&#x27;字段名&#x27;</span>)</span><br><span class="line">                run.font.name = <span class="string">&#x27;宋体&#x27;</span></span><br><span class="line">                run.bold = <span class="literal">True</span>  <span class="comment"># 加粗</span></span><br><span class="line">                <span class="comment"># table.cell(0,1).text=&#x27;数据类型&#x27;</span></span><br><span class="line">                run = tt.cell(<span class="number">0</span>, <span class="number">1</span>).paragraphs[<span class="number">0</span>].add_run(<span class="string">&#x27;数据类型&#x27;</span>)</span><br><span class="line">                run.font.name = <span class="string">&#x27;宋体&#x27;</span></span><br><span class="line">                run.bold = <span class="literal">True</span>  <span class="comment"># 加粗</span></span><br><span class="line">                <span class="comment"># table.cell(0,2).text=&#x27;允许为空&#x27;</span></span><br><span class="line">                run = tt.cell(<span class="number">0</span>, <span class="number">2</span>).paragraphs[<span class="number">0</span>].add_run(<span class="string">&#x27;允许为空&#x27;</span>)</span><br><span class="line">                run.font.name = <span class="string">&#x27;宋体&#x27;</span></span><br><span class="line">                run.bold = <span class="literal">True</span>  <span class="comment"># 加粗</span></span><br><span class="line">                <span class="comment"># table.cell(0,3).text=&#x27;字段说明&#x27;</span></span><br><span class="line">                run = tt.cell(<span class="number">0</span>, <span class="number">3</span>).paragraphs[<span class="number">0</span>].add_run(<span class="string">&#x27;字段说明&#x27;</span>)</span><br><span class="line">                run.font.name = <span class="string">&#x27;宋体&#x27;</span></span><br><span class="line">                run.bold = <span class="literal">True</span>  <span class="comment"># 加粗</span></span><br><span class="line">                cursor.execute(<span class="string">f&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">                 SELECT COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_COMMENT</span></span><br><span class="line"><span class="string">                        FROM INFORMATION_SCHEMA.COLUMNS</span></span><br><span class="line"><span class="string">                        WHERE TABLE_SCHEMA = &#x27;<span class="subst">&#123;config[<span class="string">&#x27;database&#x27;</span>]&#125;</span>&#x27; AND TABLE_NAME = &#x27;<span class="subst">&#123;tableName&#125;</span>&#x27;</span></span><br><span class="line"><span class="string">                        &quot;&quot;&quot;</span>)</span><br><span class="line">                columns = cursor.fetchall()</span><br><span class="line">                i = <span class="number">1</span></span><br><span class="line">                <span class="keyword">for</span> column <span class="keyword">in</span> columns:</span><br><span class="line">                    name,<span class="built_in">type</span>,isNull,datareserve = column</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot;name: <span class="subst">&#123;name&#125;</span>&quot;</span>)</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot;type: <span class="subst">&#123;<span class="built_in">type</span>&#125;</span>&quot;</span>)</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot;isNull: <span class="subst">&#123;isNull&#125;</span>&quot;</span>)</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot;datareserve: <span class="subst">&#123;datareserve&#125;</span>&quot;</span>)</span><br><span class="line">                    tt.add_row()</span><br><span class="line">                    tt.cell(i, <span class="number">0</span>).text = name</span><br><span class="line">                    tt.cell(i, <span class="number">1</span>).text = <span class="built_in">type</span></span><br><span class="line">                    tt.cell(i, <span class="number">2</span>).text = isNull</span><br><span class="line">                    tt.cell(i, <span class="number">3</span>).text = datareserve</span><br><span class="line">                    i = i + <span class="number">1</span></span><br><span class="line">                j = j + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        connect.close()</span><br><span class="line">    document.save(<span class="string">f&quot;<span class="subst">&#123;config[<span class="string">&#x27;database&#x27;</span>]&#125;</span>.docx&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    logprint()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;完成&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>修改代码中config中  host 地址  user账号  password 密码  database 库名</p>
+<p>改完执行main 方法   </p>
+<p>注：不会生成目录  页码  需生成文档后在word 中自己生成</p>
+
+      </div>
+      
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/python/">python</a>
+            </div>
+        
+        <nav class="post-nav"><a class="next" href="/2024/02/20/gitlib/">
+        <span class="next-text nav-default">GitLab的安装使用及迁移</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2024<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">ZiQiYang</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v="></script>
+</body>
+</html>

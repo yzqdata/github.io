@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="GitLab的安装使用及迁移"/><meta name="keywords" content="Gitlib, yzq" /><link rel="alternate" href="/atom.xml" title="yzq" type="application/atom+xml">
+<link rel="canonical" href="http://example.com/2024/02/20/gitlib/"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=" />
+
+<script>
+  window.config = {"leancloud":"","toc":"","fancybox":"","pjax":"","latex":""};
+</script>
+
+    <title>GitLab的安装使用及迁移 - yzq</title>
+  <meta name="generator" content="Hexo 6.1.0"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">yzq</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">yzq</a>
+</div>
+
+<nav class="site-navbar"></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">GitLab的安装使用及迁移
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2024-02-20
+        </span></div>
+    </header>
+
+    <div class="post-content"><p>记录一次GitLab的迁移过程。</p>
+<p>由于原有的GitLab部署在内网环境中，对于出差的同事只能通过路由器映射端口才能使用GitLab，如此背景下进行GitLab从内网迁移到云。系统环境为Ubuntu迁移到CentOS下。在安装迁移过程中遇到很多问题，本文将以事件过程分享。</p>
+<h3 id="1-安装文档"><a href="#1-安装文档" class="headerlink" title="1.安装文档"></a>1.安装文档</h3><p>查看<a target="_blank" rel="noopener" href="https://about.gitlab.com/install/#centos-7">GitLab官方安装文档</a>，得到如下内容：</p>
+<h5 id="1-安装和配置所需的依赖"><a href="#1-安装和配置所需的依赖" class="headerlink" title="1.安装和配置所需的依赖"></a>1.安装和配置所需的依赖</h5><p>在 CentOS 7 上，下面的命令会在系统防火墙中打开 HTTP、HTTPS 和 SSH 访问。这是一个可选步骤，如果您打算仅从本地网络访问极狐GitLab，则可以跳过它。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y curl policycoreutils-python openssh-server perl</span><br><span class="line">sudo systemctl enable sshd</span><br><span class="line">sudo systemctl start sshd</span><br><span class="line"></span><br><span class="line">sudo firewall-cmd --permanent --add-service=http</span><br><span class="line">sudo firewall-cmd --permanent --add-service=https</span><br><span class="line">sudo systemctl reload firewalld</span><br></pre></td></tr></table></figure>
+
+<p>（可选）如果要使用 Postfix 来发送电子邮件通知，执行以下安装命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install postfix</span><br><span class="line">sudo systemctl enable postfix</span><br><span class="line">sudo systemctl start postfix</span><br></pre></td></tr></table></figure>
+
+<p>在安装 Postfix 的过程中可能会出现一个配置界面，在该界面中选择“Internet Site”并按下回车。把“mail name”设置为您服务器的外部 DNS 域名并按下回车。如果还有其他配置界面出现，继续按下回车以接受默认配置。</p>
+<p>如果您想使用其他解决方案发送电子邮件，请跳过上面 Postfix 安装步骤并在安装极狐GitLab 后配置外部 SMTP 服务器。</p>
+<h5 id="2-下载并安装极狐GitLab"><a href="#2-下载并安装极狐GitLab" class="headerlink" title="2.下载并安装极狐GitLab"></a>2.下载并安装极狐GitLab</h5><p>执行以下命令配置极狐GitLab 软件源镜像。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://packages.gitlab.cn/repository/raw/scripts/setup.sh | /bin/bash</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>接下来，安装极狐GitLab。安装之前，需要确保您的DNS设置正确。此外，还需要通过设置 EXTERNAL_URL 环境变量来指定极狐GitLab 实例的 URL。</p>
+<p>如果您想通过 HTTPS 来访问实例，那么您可以根据官方文档进行配置，让实例使用 Let’s Encrypt 自动请求 SSL 证书，这需要有效的主机名和入站 HTTP 访问。您也可以使用自己的证书或仅使用 http:&#x2F;&#x2F;（不带 s）。</p>
+<p>如果您想为初始管理员用户（ root ）指定自定义的初始密码，可以根据文档指导进行配置。否则将默认生成随机密码。</p>
+<p>接下来执行如下命令开始安装：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo EXTERNAL_URL=&quot;https://gitlab.example.com&quot; yum install -y gitlab-jh</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-社区版安装"><a href="#2-社区版安装" class="headerlink" title="2.社区版安装"></a>2.社区版安装</h3><p>尝试修改为社区版脚本安装，结果为可使用，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash</span><br><span class="line">sudo EXTERNAL_URL=&quot;https://gitlab.example.com&quot; yum install -y gitlab-ce</span><br></pre></td></tr></table></figure>
+
+<p>目录:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">主目录：/opt/gitlab</span><br><span class="line">配置文件地址：/etc/gitlab/gitlab.rb</span><br><span class="line">各个组件地址：/var/opt/gitlab</span><br><span class="line">日志地址：/var/log/gitlab</span><br></pre></td></tr></table></figure>
+
+<p>常用命令:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#启动状态</span><br><span class="line">gitlab-ctl status</span><br><span class="line">#重新加载配置</span><br><span class="line">sudo gitlab-ctl reconfigure</span><br><span class="line">#重新启动</span><br><span class="line">gitlab-ctl restart</span><br><span class="line">#启动</span><br><span class="line">gitlab-ctl start</span><br><span class="line">#停止</span><br><span class="line">gitlab-ctl stop</span><br><span class="line">#停止某个组件</span><br><span class="line">gitlab-ctl stop unicorn</span><br><span class="line">#各组件日志查看</span><br><span class="line">gitlab-ctl tail nginx</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-备份被迁移的GitLab"><a href="#3-备份被迁移的GitLab" class="headerlink" title="3.备份被迁移的GitLab"></a>3.备份被迁移的GitLab</h3><p>备份原来的GitLab:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gitlab-rake gitlab:backup:create</span><br></pre></td></tr></table></figure>
+
+<p>默认备份目录存放在 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/opt/gitlab/backups</span><br></pre></td></tr></table></figure>
+
+<p>可通过修改&#x2F;etc&#x2F;gitlib&#x2F;gitlib.rb 放开注释修改路径即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># gitlab_rails[&#x27;backup_path&#x27;] = &quot;/var/opt/gitlab/backups&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>将备份文件(几十个G，有点大)上传到目标服务器上:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp 1599804179_2020_09_11_12.6.2_gitlab_backup.tar root@xxx:/var/opt/gitlab/backups/</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-恢复备份"><a href="#4-恢复备份" class="headerlink" title="4.恢复备份"></a>4.恢复备份</h3><p>在目标服务恢复备份：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl stop unicorn</span><br><span class="line">gitlab-ctl stop sidekiq</span><br><span class="line">chmod 777 1599804179_2020_09_11_12.6.2_gitlab_backup.tar</span><br><span class="line">gitlab-rake gitlab:backup:restore BACKUP=1599804179_2020_09_11_12.6.2</span><br></pre></td></tr></table></figure>
+
+<p>在恢复过程中报错，版本不兼容。</p>
+<h3 id="5-版本兼容问题"><a href="#5-版本兼容问题" class="headerlink" title="5.版本兼容问题"></a>5.版本兼容问题</h3><p>查看原来GitLab版本为12.6.2，新安装版本为13.3.5，尝试升级原有GitLab:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cat /opt/gitlab/embedded/service/gitlab-rails/VERSION</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install gitlab-ce</span><br><span class="line">sudo apt install gitlab-ce=13.3.5-ce</span><br></pre></td></tr></table></figure>
+
+<p>发现GitLab不能跨版本升级，升级到了12.9.2，考虑到升级需要时间，备份文件过大传输过慢，决定将新安装的13.3.5版本GitLab降版本到12.6.2</p>
+<h3 id="6-卸载重装"><a href="#6-卸载重装" class="headerlink" title="6.卸载重装"></a>6.卸载重装</h3><p>卸载并删除GitLab:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y gitlab-ee</span><br><span class="line">find / -name gitlab | xargs rm -rf</span><br></pre></td></tr></table></figure>
+
+<p>尝试直接修改脚本安装：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce-12.6.2/script.rpm.sh | sudo bash</span><br><span class="line">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce.12.6.2/script.rpm.sh | sudo bash</span><br></pre></td></tr></table></figure>
+
+<p>未能成功。查看连接是否正确。浏览器中打开显示<code>The page you were looking for doesn&#39;t exist</code>，<code>wget</code>显示<code>404</code>。官网中寻找到<a target="_blank" rel="noopener" href="https://packages.gitlab.com/gitlab/gitlab-ce/">下载地址</a>（直接改地址，官网查找，找了好久没找到，最后在搜索引擎中找到了地址），搜索<code>12.6.2</code>查找包，根据系统版本选择版本，这里选择<code>el/7</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -s https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash</span><br><span class="line">sudo yum install gitlab-ce-12.6.2-ce.0.el7.x8，6_64</span><br></pre></td></tr></table></figure>
+
+<p>安装成功后，启动服务。浏览器中访问为502。查看各组件启动情况，并配置修改。</p>
+<h3 id="7-配置"><a href="#7-配置" class="headerlink" title="7.配置"></a>7.配置</h3><p>挨个查询各个组件运行情况并解决（比较庞大，繁琐。只能遇到什么问题解决什么问题），修改配置后需要重新加载配置并启动</p>
+<p>各组件进程不能通过kill杀掉，gitlab-ctl守护进程会启动子进程。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo gitlab-ctl reconfigure</span><br><span class="line">sudo gitlab-ctl restart</span><br></pre></td></tr></table></figure>
+
+<p>以下为本次迁移遇到的问题以及解决方案：</p>
+<ol>
+<li><code>gitlab-ctl reconfigure</code>出现<code>No such file or directory</code>错误</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/opt/gitlab/embedded/bin/gitlab-logrotate-wrapper: No such file or directory</span><br><span class="line">/opt/gitlab/embedded/service/gitlab-rails/bin/sidekiq-cluster: No such file or directory</span><br></pre></td></tr></table></figure>
+
+<p>可以从其他机器拷贝一份，也可以通过来回修改<code>unicorn</code>端口号自动生成文件</p>
+<ol>
+<li>nginx端口号冲突导致启动异常</li>
+</ol>
+<p>本台服务器通过<code>nginx</code>代理很多其他服务。决定禁用<code>GitLab</code>自带<code>nginx</code>使用原有<code>nginx</code>。修改<code>GitLab</code>配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">external_url &#x27;xxx&#x27;</span><br><span class="line">gitlab_workhorse[&#x27;listen_network&#x27;] = &quot;tcp&quot;</span><br><span class="line">gitlab_workhorse[&#x27;listen_addr&#x27;] = &quot;127.0.0.1:18181&quot;</span><br><span class="line">nginx[&#x27;enable&#x27;] = false</span><br></pre></td></tr></table></figure>
+
+<p>修改原有<code>nginx</code>代理到该服务。启动后出现异常，手动关闭<code>GitLab</code>中<code>nginx</code>服务恢复正常。猜测与<code>external_url</code>有关系。可尝试注释掉<code>external_url</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl stop nginx</span><br></pre></td></tr></table></figure>
+
+<p>同时可能没有写日志权限，要赋予权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod -R o+x /var/opt/gitlab/gitlab-rails</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>unicorn端口号冲突导致启动异常</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unicorn[&#x27;port&#x27;] = 18080</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>prometheus端口冲突导致启动异常</li>
+</ol>
+<p>直接修改了原来的prometheus端口</p>
+<ol>
+<li>unicorn写日志权限不足</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod -R 777 /var/log/gitlab</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>其他类似问题</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;address&quot;:&quot;/var/opt/gitlab/redis/redis.socket&quot;,&quot;level&quot;:&quot;info&quot;,&quot;msg&quot;:&quot;redis: dialing&quot;,&quot;network&quot;:&quot;unix&quot;,&quot;time&quot;:&quot;2020-09-11T18:01:41+08:00&quot;&#125;</span><br><span class="line">&#123;&quot;error&quot;:&quot;keywatcher: dial unix /var/opt/gitlab/redis/redis.socket: connect: connection refused&quot;,&quot;level&quot;:&quot;error&quot;,&quot;msg&quot;:&quot;unknown error&quot;,&quot;time&quot;:&quot;2020-09-11T18:01:41+08:00&quot;&#125;</span><br><span class="line"></span><br><span class="line">ind() to 0.0.0.0:80 failed (98: Address already in use)</span><br><span class="line"></span><br><span class="line">The data directory was initialized by PostgreSQL version 11, which is not compatible with this version 10.9</span><br></pre></td></tr></table></figure>
+
+<p>经过各种问题的解决终于服务正常，并在浏览器中可以访问到。</p>
+<h3 id="8-再次恢复"><a href="#8-再次恢复" class="headerlink" title="8.再次恢复"></a>8.再次恢复</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 1599804179_2020_09_11_12.6.2_gitlab_backup.tar</span><br><span class="line">gitlab-rake gitlab:backup:restore BACKUP=1599804179_2020_09_11_12.6.2</span><br></pre></td></tr></table></figure>
+
+<p>过程中有一个项目恢复失败</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sxf ... [DONE]</span><br><span class="line">        * tangKu8/misapp ... Error: 13:CreateRepositoryFromBundle: cmd wait failed: exit status 128</span><br><span class="line">        [Failed] restoring tangKu8/misapp repository</span><br><span class="line">Warning: Your gitlab.rb and gitlab-secrets.json files contain sensitive data</span><br><span class="line">and are not included in this backup. You will need to restore these files manually.</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-邮件配置"><a href="#9-邮件配置" class="headerlink" title="9.邮件配置"></a>9.邮件配置</h3><h3 id="10-验证"><a href="#10-验证" class="headerlink" title="10.验证"></a>10.验证</h3><p>验证各个用户和项目迁移是否成功。</p>
+
+      </div>
+      
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/Gitlib/">Gitlib</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2024/04/09/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8python%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%97%E5%85%B8/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">使用pythonDoc 生成数据库字典</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2024/02/20/%E5%88%86%E4%BA%AB%E9%81%87%E5%88%B0%E7%9A%84%E7%9F%BF%E6%9C%BA%E8%84%9A%E6%9C%AC%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
+        <span class="next-text nav-default">分享遇到的矿机脚本解决方案</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2024<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">ZiQiYang</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v="></script>
+</body>
+</html>
